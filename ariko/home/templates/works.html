@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load embed_video_tags %}
+{% block title %}
+<title> SellArt </title>
+{% endblock %}
+
+{% block home %}
+<section class="home-text text-center">
+    <div class="container"><h2>Share and buy spectacular art solutions.</h2><span>Any work of your choice.</span>
+        <div class="container"><span>  </span></div>
+    </div>
+</section>
+<div class="site-wrapper"><!-- site header -->
+    <section class="home-portfolio">
+        <div class="container">
+            <div class="row masonry clearfix"><!-- col -->
+                {% for work in works %}
+                <div class="col-md-4 col-sm-6 grid-item"><!-- portfolio item -->
+                    <div class="portfolio-item"><!-- hover -->
+                        <div class="hover">
+                            <div class="info"><!-- title --><h3><a href="{% url 'works_detail' work.slug %}">{{work.title}}</a>
+                            </h3>
+                                {% for tag in work.tags.all %}
+                               <span><a href="{% url 'tag_detail' tag.slug  %}">#{{tag|title}}</a></span>
+                                {% endfor %}
+                                <div class="icons"><a href="{% url 'works_detail' work.slug %}" class="more-link">
+                                    <i class="ion-md-arrow-forward"></i>
+                                </a><i class="ion-md-heart-empty favorite"></i>
+                                </div>
+                            </div><!-- background overlay -->
+                            <div class="overlay"><span></span><span></span><span></span><span></span></div>
+                        </div><!-- image --><img src="{{work.image.url}}" alt="portfolio-item"/>
+                    </div>
+                </div><!-- col -->
+                {% endfor %}
+            </div><!-- pagination -->
+        </div>
+        <div class="text-center load-more"><!-- load more button -->
+            <button><i class="icon ion-md-arrow-down"></i></button><!-- numbered pagination -->
+            <ul id="pagination-selector" class="portfolio-pagination list-inline d-none">
+                {% if page_obj.has_next %}
+                <li class="page-item ">
+                    <a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+

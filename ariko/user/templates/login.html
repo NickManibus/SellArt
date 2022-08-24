@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block user %}
+<section class="content">
+    <div class="container container-padding">
+        <div class="page-header" style="text-align: center"><h1>LogIn</h1>
+            {% if form.errors %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div id="form_errors">
+                    {% for key, value in form.errors.items %}
+                    <strong>{{ value }}</strong>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <form id="contact-form" class="contact-form mt-6" method="post" action=" "
+                  autocomplete="off">
+                {% csrf_token %}
+                <div class="messages"></div>
+                <div class="row">
+                    <div class="column col-md-6">
+                        <div class="form-group">
+                            {{form.username}}
+                        </div>
+                        {% if form.user_name.errors %}
+                        <div class="help-block with-errors">
+                            <strong>{{form.user_name.errors}}</strong>
+                        </div>
+                        {% endif%}
+                    </div>
+                    <div class="column col-md-6"><!-- password input -->
+                        <div class="form-group">
+                            {{form.password}}
+                            <div class="help-block with-errors"></div>
+                        </div>
+                        {% if form.user_name.errors %}
+                        <div class="help-block with-errors">
+                            <strong>{{form.password.errors}} </strong>
+                        </div>
+                        {% endif%}
+                    </div>
+                </div>
+
+                <button type="submit" name="submit" id="submit" value="Send" class="btn btn-default btn-lg btn-full">
+                    Send
+                </button><!-- Send Button -->
+
+                <button type="submit" name="submit" value="Send" class="btn btn-default btn-lg btn-full"
+                        style="width: 400px">
+                    <a href="{% url 'social:begin' 'facebook' %}" style='color: white;'>Login with Facebook</a>
+                </button>
+
+                <button type="submit" name="submit" value="Send" class="btn btn-default btn-lg btn-full"
+                        style="width: 400px">
+                    <a href="{% url 'social:begin' 'google-oauth2' %}" style='color: white;'>Login with Google</a>
+                </button>
+                <br><br>
+
+                <div class="text-center">
+                    <div class="small">
+                        <a href="{% url 'signin_page' %}">Don't have an account yet? Go to signup</a><br>
+                        <a href="{% url 'password_reset' %}"><i>Forgot Password?</i></a>
+                    </div>
+                </div>
+
+                <!--                <div class="form-row">-->
+                <!--                    <div class="col-md-10 offset-md-1">-->
+                <!--                        <div class="form-group">-->
+                <!--                            &lt;!&ndash; Add a Remember me functionality &ndash;&gt;-->
+                <!--                            {{ form.remember_me }}-->
+                <!--                            <label style='font-size: 13px;'> Remember me</label>-->
+                <!--                        </div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+
+            </form><!-- Contact Form end -->
+        </div>
+    </div>
+</section><!-- email section -->
+{% endblock %}

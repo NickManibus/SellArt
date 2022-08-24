@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} <title> Post tag </title> {% endblock %}
+
+{% block content %}
+<section class="blog-content">
+    <div class="container container-padding">
+        <h1 class="title" style="padding-left:70px;">Post with {{ detail_tag.name|title }} tag: </h1>
+    </div>
+</section>
+
+{% for post in detail_tag.posts.all %}
+<section class="blog-content">
+    <div class="container container-padding"><!-- blog item -->
+        <article class="blog-item"><!-- header -->
+            <header><!-- title --><h2 class="title"><a href="{% url 'post_single' post.slug %}">{{post.title}}</a></h2>
+                <!-- meta -->
+                {% for tag in post.tags.all %}
+                <li class="list-inline-item"><a href="#">{{tag}}</a></li>
+                {% endfor %}
+                <p></p>
+                <img src="{{post.image.url}}" alt="blog-thumb" width="945" height="500"/>
+            </header>
+            <footer><!-- except --><p class="except">{{post.text| truncatewords:50}}</p><!-- button -->
+                <a href="{% url 'post_single' post.slug %}" class="btn btn-default">Read more</a></footer>
+        </article><!-- blog item -->
+    </div>
+</section><!-- email section -->
+{% endfor %}
+
+
+{% endblock  %}

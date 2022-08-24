@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block home %}
+<section class="content">
+    <div class="container container-padding">
+        <div class="page-header"><h1>Get In Touch.</h1>
+            <p>Nor again is there anyone who loves or pursues</p></div>
+    </div>
+    <div class="parallax-bg" data-image-src="{% static 'images/contact.jpg' %}" data-stellar-background-ratio="0.5"></div>
+    <div class="container container-padding"><h2 class="mt-10 mb-3">What are you looking for?</h2>
+        <p class="mb-0">Drop us a line</p><!-- Contact Form -->
+        {% include 'contact/contact_form.html' %}
+    </div>
+
+</section>
+{% endblock %}

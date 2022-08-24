@@ -1,0 +1,71 @@
+{% load static %}
+
+{% block nav %}
+<div id="preloader">
+    <div class="loading-area"><h3>SellArt.</h3><span>loading...</span>
+    </div>
+    <div class="left-side"></div>
+    <div class="right-side"></div>
+</div><!-- overlay dark menu -->
+<div class="overlay-menu d-flex align-items-start flex-column"><!-- logo, close icon, social icons -->
+    <nav class="navbar navbar-light">
+        <div class="container"><!-- logo light --><a class="navbar-brand" href="{% url 'home_page' %}">
+            <img src="{% static 'images/SeelArt.png' %}" alt="logo"/></a><!-- close icon -->
+            <div class="close-icon"><i class="ion-md-close"></i></div><!-- social icons -->
+            <ul class="social-icons light list-inline">
+                <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+            </ul>
+        </div>
+    </nav><!-- navigation menu -->
+    <ul class="vertical-menu mt-auto">
+        <li><a href=" ">Account</a>
+            <ul class="submenu">
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'users_profile' user.slug %}">Profile</a>
+                    {% else %}
+                <li><a href="{% url 'login_page' %}">Login</a>
+                    {% endif %}
+                <li><a href="{% url 'signin_page' %}">Register</a></li>
+                <li><a href="{% url 'logout_page' %}">Logout</a>
+            </ul>
+        <li><a href="{% url 'home_page' %}">Works </a>
+        {% for work in works %}
+            <ul class="submenu">
+                <li><a href="{% url 'works_detail' work.slug %}">Single works</a>
+                <li><a href="{% url 'video_list' %}">Video list</a></li>
+            </ul>
+        {% endfor %}
+        <li><a href="{% url 'blog_page' %}">Journal</a>
+            <ul class="submenu">
+                <li>
+                    <a href="{% url 'blog_page' %}">List</a></li>
+            </ul>
+        </li>
+        <li><a href="{% url 'about_page' %}">About</a>
+        </li>
+        <li><a href="{% url 'contact_page' %}">Contact</a></li>
+    </ul><!-- copyright -->
+    <footer class="text-center mt-auto">
+        <div class="container">
+            <span class="copyright">© 2022 Solutions Media, Inc</span></div>
+    </footer>
+</div><!-- begin site wrapper -->
+<div class="site-wrapper"><!-- site header -->
+    <header>
+        <nav class="navbar navbar-light">
+            <div class="container d-flex"><!-- logo --><a class="navbar-brand" href="{% url 'home_page' %}">
+                <img src="{% static 'images/logo.png' %}" alt="logo"/></a><!-- menu icon -->
+                <div class="menu-icon justify-content-end"><span>
+</span><span></span><span></span></div><!-- social icons -->
+                <ul class="social-icons list-inline">
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-twitter"></i></a></li>
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-instagram"></i></a></li>
+                    <li class="list-inline-item"><a href="#"><i class="fab fa-linkedin-in"></i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </header><!-- home big text -->
+</div>
+{% endblock nav %}

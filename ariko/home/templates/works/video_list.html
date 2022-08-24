@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load embed_video_tags %}
+{% load static %}
+{% block content %}
+<section class="content portfolio-single">
+    <div class="container container-padding">
+        <div class="title text-center"><h1></h1>
+            <ul class="list-inline">
+                <li class="list-inline-item"><h2>Video List</h2></li>
+            </ul>
+        </div>
+    </div>
+    <div class="d-flex flex-wrap">
+        {% for videos in video %}
+        <div class="px-4 mb-5">
+            {% video videos.video_url '426x240' %}
+            <div class="d-flex justify-content-start">
+                <a href="{% url 'single_video' videos.slug %}">{{ videos.title }}</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="container clearfix">
+        <div class="navigation">
+            <ul class="pagination justify-content-center">
+                {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                <a href="#">{{ i }} </a>
+                {% else %}
+                <a href="?page={{ i }}">&nbsp;&nbsp;{{ i }}</a>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock content %}

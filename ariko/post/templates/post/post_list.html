@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} <title> Posts </title> {% endblock %}
+{% block content %}
+<section class="blog-content">
+    <div class="container container-padding"><!-- blog item -->
+        {% for post in posts %}
+        <article class="blog-item"><!-- header -->
+            <header><!-- title --><h2 class="title" ><a href="{% url 'post_single' post.slug %}">{{post.title}}</a></h2><!-- meta -->
+                <ul class="meta list-inline">
+                    <li class="list-inline-item"><a href="#">Ariko</a></li>
+                    <li class="list-inline-item"><a href="#">Thoughts</a></li>
+                </ul>
+                <p></p>
+                <img src="{{post.image.url}}" alt="blog-thumb" width="945" height="500"/>
+            </header>
+            <footer><!-- except --><p class="except">{{post.text| truncatewords:50}}</p><!-- button -->
+                <a href="{% url 'post_single' post.slug %}" class="btn btn-default">Read more</a></footer>
+        </article><!-- blog item -->
+        {% endfor %}
+    </div>
+</section><!-- email section -->
+
+<ul class="pagination justify-content-center">
+    {% for i in page_obj.paginator.page_range %}
+    {% if page_obj.number == i %}
+     <a href="#">{{ i }} </a>
+    {% else %}
+     <a href="?page={{ i }}">&nbsp;&nbsp;{{ i }}</a>
+    {% endif %}
+    {% endfor %}
+</ul>
+{% endblock content %}

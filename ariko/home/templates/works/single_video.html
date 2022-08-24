@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load embed_video_tags %}
+{% load static %}
+{% block content %}
+<section class="content portfolio-single">
+    <div class="container container-padding">
+        <div class="title text-center"><h1>{{video.title}}</h1>
+            <ul class="list-inline">
+                {% for tag in work.tags.all %}
+                <li class="list-inline-item">{{tag|title}}</li>
+                {% endfor %}
+                <li class="list-inline-item">Development, Branding</li>
+            </ul>
+        </div>
+    </div>
+    <div class="portfolio-info">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="item">
+                        <div class="parent"><span>Author</span><h4>{{video.name}}</h4></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="item">
+                        <div class="parent"><span>Сontact</span><h4><a target="_blank">{{video.email}}</a>
+                        </h4></div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="item">
+                        <div class="parent"><span>Social</span><h4>
+                            <a href="{{video.social}}"><i class="fab fa-instagram"></i></a>
+                        </h4></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        {% if video.file %}
+        <iframe src="{{ video.file.url }}" width="1050" height="600" type="works/video/mp4" frameborder="0" allowfullscreen></iframe>
+        {% else %}
+            {% video video.video_url '1050x600' %}
+        {% endif %}
+    </div>
+    <div class="container container-padding"><h2 class="mt-15 mb-4">{{video.title}}<br/></h2>
+        {{video.description | linebreaks}}
+    </div>
+    <div class="container clearfix">
+        <div class="navigation">
+            {% if video.get_previous_by_time_create %}
+            <a href="/works/single_video/{{ video.get_previous_by_time_create.slug }}/" class="prev float-left">
+                <i class="ion-md-arrow-back"></i>{{ video.get_previous_by_time_create }} - Previous Project </a>
+            {% endif %}
+            {% if video.get_next_by_time_create %}
+            <a href="/works/single_video/{{ video.get_next_by_time_create.slug }}/" class="next float-right">Next Project -
+                {{ video.get_next_by_time_create }}
+                <i class="ion-md-arrow-forward"></i></a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{% endblock content %}
