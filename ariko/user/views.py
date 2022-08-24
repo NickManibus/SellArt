@@ -60,11 +60,11 @@ class Profile(UpdateView, DetailView):
         return HttpResponseRedirect(reverse('users_profile', kwargs={'slug': self.get_object().slug}))
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, FormView):
     model = Work
     form_class = UserFormWorks
     template_name = 'profile/create_project.html'
-    # success_url = reverse_lazy('users_profile')
+    success_url = reverse_lazy('users_profile')
 
     def get_context_data(self, **kwargs):
         context = super(PostCreateView, self).get_context_data(**kwargs)
@@ -77,24 +77,26 @@ class PostCreateView(LoginRequiredMixin, CreateView):
     #     return super().form_valid(form)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES)
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        images = request.FILES.getlist('Images')
         if form.is_valid():
-            form.instance.author = self.request.user
             form.save()
+            for img in images:
+                file = Images(images=img)
+                file.save()
             messages.success(request, 'New Project Added')
-        return super(PostCreateView, self).forms_valid(form)
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
-
-# def create_project(request):
-#     if request.method == 'POST':
-#         form = UserFormWorks(request.POST, request.FILES)
-#         file = request.FILES.getlist('image')
-#         if form.is_valid():
-#             form.author = request.user
-#             form.save()
-#             for img in file:
-#                 Image.objects.create(image=img)
-#         return render(request, 'profile/create_project.html', {"form": form})
-#     else:
-#         form = UserFormWorks()
-#         return render(request, 'profile/create_project.html', {"form": form})
+# def post_create_view(request):
+    #     if request.method == 'POST':
+    #         form = UserFormWorks(request.POST, request.FILES)
+    #         if form.is_valid():
+    #
+    #             form.save()
+    #             return HttpResponseRedirect('users_profile')
+    #     else:
+    #         form = UserFormWorks()
+    #     return render(request, 'profile/create_project.html', {'form': form})
