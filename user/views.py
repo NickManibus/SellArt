@@ -1,13 +1,12 @@
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, UpdateView, DetailView, FormView
+from django.views.generic import CreateView, UpdateView, DetailView, FormView, DeleteView
 from user.forms import RegisterForm, LoginForm, UpdateUserForm, UserFormWorks
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import logout
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin, messages
 from django.contrib.auth import get_user_model
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from home.models import Work, User, Images
 
 from django.shortcuts import HttpResponseRedirect
@@ -46,11 +45,10 @@ class Profile(UpdateView, DetailView):
     model = User
     template_name = 'profile/profile.html'
     form_class = UpdateUserForm
-    success_url = reverse_lazy('users_profile')
 
-    def get_context_data(self, **kwargs):
-        context = super(Profile, self).get_context_data(**kwargs)
-        context['user_form'] = UpdateUserForm(instance=self.request.user)
+    def get_context_data(self, *args, **kwargs):
+        context = super(Profile, self).get_context_data(*args, **kwargs)
+        context['user_form'] = UpdateUserForm( instance=self.request.user)
         context['works'] = Work.objects.filter(author=self.request.user)
         return context
 
@@ -60,14 +58,14 @@ class Profile(UpdateView, DetailView):
         return HttpResponseRedirect(reverse('users_profile', kwargs={'slug': self.get_object().slug}))
 
 
-class PostCreateView(LoginRequiredMixin, FormView):
+class CreateWorkView(LoginRequiredMixin, CreateView):
     model = Work
     form_class = UserFormWorks
     template_name = 'profile/create_project.html'
-    success_url = reverse_lazy('users_profile')
+    success_url = reverse_lazy('home_page')
 
     def get_context_data(self, **kwargs):
-        context = super(PostCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['form'] = UserFormWorks(instance=self.request.user)
         context['works'] = Work.objects.all()
         return context
@@ -75,19 +73,32 @@ class PostCreateView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.save()
-        return HttpResponseRedirect(reverse('users_profile', kwargs={'slug': self.slug}))
+        return HttpResponseRedirect(self.request.path)
 
-    # def post(self, request, *args, **kwargs):
-    #     form_class = self.get_form_class()
-    #     form = self.get_form(form_class)
-    #     images = request.FILES.getlist('Images')
-    #     if form.is_valid():
-    #         form.save()
-    #         for img in images:
-    #             file = Images(images=img)
-    #             file.save()
-    #         messages.success(request, 'New Project Added')
-    #         return self.form_valid(form)
-    #     else:
-    #         return self.form_invalid(form)
 
+class UpdateWorkView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Work
+    form_class = UserFormWorks
+    template_name = 'profile/create_project.html'
+    success_url = reverse_lazy('home_page')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        work = self.get_object()
+        if self.request.user == work.author:
+            return True
+        return False
+
+class DeleteWorkView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Work
+    template_name = 'profile/work_delete.html'
+    success_url = reverse_lazy('home_page')
+
+    def test_func(self):
+        work = self.get_object()
+        if self.request.user == work.author:
+            return True
+        return False

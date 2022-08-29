@@ -1,5 +1,6 @@
 from django.urls import path, include
-from user.views import RegisterView, log_out, LogLoginView, ChangePasswordView, PostCreateView, Profile
+from user.views import RegisterView, log_out, LogLoginView, ChangePasswordView, CreateWorkView, Profile, UpdateWorkView, \
+    DeleteWorkView
 from django.shortcuts import redirect
 from django.urls import reverse
 from user.forms import LoginForm
@@ -11,8 +12,10 @@ urlpatterns = [
          name="login_page"),
     path('signin/', RegisterView.as_view(), name='signin_page'),
     path('logout/', log_out, name='logout_page'),
-    path('profile/<slug:slug>/', Profile.as_view(), name='users_profile'),
-    path('profile/create_post', PostCreateView.as_view(), name='create_post'),
+    path('profile/<str:slug>/', Profile.as_view(), name='users_profile'),
+    path('profile/create_post', CreateWorkView.as_view(), name='create_post'),
+    path('post/<str:slug>/update/', UpdateWorkView.as_view(), name='work_update'),
+    path('post/<str:slug>/delete/', DeleteWorkView.as_view(), name='work_delete'),
     path('social-auth/', include('social_django.urls', namespace="social")),
     path('password-change/', ChangePasswordView.as_view(), name='password_change'),
     path('', lambda request: redirect(reverse('login_page'))),

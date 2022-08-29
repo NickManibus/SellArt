@@ -37,6 +37,3 @@ class FormContact(forms.ModelForm):
             raise forms.ValidationError('Попробуйте еще раз')
         return self.cleaned_data
 
-    # def save(self, **kwargs):
-    #     adminmodel = FeedBackContact(**self.cleaned_data)
-    #     adminmodel.save()

@@ -24,7 +24,7 @@ class User(AbstractUser):
         db_table = 'users'
         verbose_name = 'user'
 
-    def save(self, *args, **kwargs):  # save slug new user
+    def save(self, *args, **kwargs): # save slug new user
         self.slug = slugify(self.username)
         super().save(*args, **kwargs)
 

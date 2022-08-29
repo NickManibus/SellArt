@@ -1,7 +1,9 @@
 from django import forms
 from user.models import User
-from home.models import Work, Images
+from home.models import Work, Tags
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.core.exceptions import ValidationError
+from django.utils.text import slugify
 
 
 class RegisterForm(UserCreationForm):
@@ -98,8 +100,8 @@ class UpdateUserForm(forms.ModelForm):
 
     )
 
-    avatar = forms.FileField(
-        widget=forms.ClearableFileInput(
+    avatar = forms.ImageField(
+        widget=forms.FileInput(
             attrs={'class': 'ask-signup-avatar-input', }),
         required=False,
     )
@@ -126,60 +128,41 @@ class UpdateUserForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'email', 'instagram', 'bio', 'phone', 'avatar']
 
+        def clean_avatar(self):
+            avatar = self.cleaned_data.get('avatar')
+            if avatar is None:
+                raise forms.ValidationError(u'Добавьте картинку')
+            if 'image' not in avatar.content_type:
+                raise forms.ValidationError(u'Неверный формат картинки')
+            return avatar
+
 
 class UserFormWorks(forms.ModelForm):
-    title = forms.CharField(
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'title', 'placeholder': 'Title'},
-        )
-    )
-
-    text = forms.CharField(
-        widget=forms.Textarea(
-            attrs={'class': 'form_control w-100', 'id': 'Text', 'placeholder': 'Text', 'rows': 8, },
-        )
-    )
-
-    email = forms.EmailField(
-        label='email',
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'email', 'placeholder': 'Email'},
-        )
-
-    )
-
-    instagram = forms.URLField(
-        widget=forms.TextInput(
-            attrs={'class': 'form-control', 'id': 'phone', 'placeholder': 'URL'},
-        )
-    )
-
-    images = forms.ImageField(
-        label='Images',
-        widget=forms.ClearableFileInput(
-            attrs={'multiple': True, 'class': 'ask-signup-avatar-input', 'placeholder': 'images'}),
-    )
-
-    # tags = forms.CharField(
-    #     label='slug',
-    #     widget=forms.TextInput(
-    #         attrs={'class': 'form-control', 'id': 'email', 'placeholder': 'Tags'},
-    #     )
-    #
-    # )
+    tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=Tags.objects.all())
 
     class Meta:
         model = Work
-        fields = ['title', 'text', 'email', 'instagram', 'images', 'tags']
+        fields = ['title', 'text', 'email', 'instagram', 'image', 'image1', 'image2', 'tags', ]
 
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-control', 'id': 'title', 'placeholder': 'Title'}),
 
-# class ImageForm(forms.Form):
-#     images = forms.FileField(
-#         label='Images',
-#         widget=forms.ClearableFileInput(
-#             attrs={'multiple': True, 'class': 'ask-signup-avatar-input', 'placeholder': 'images'}),
-#     )
-#
-#     class Meta:
-#         model = Images
-#         fields = ('image',)
+            'text': forms.Textarea(
+                attrs={'class': 'form_control w-100', 'id': 'Text', 'placeholder': 'Text', 'rows': 8, }),
+            'email': forms.TextInput(attrs={'class': 'form-control', 'id': 'email', 'placeholder': 'Email'}),
+            'instagram': forms.TextInput(attrs={'class': 'form-control', 'id': 'phone', 'placeholder': 'URL'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'input', 'placeholder': 'images'}),
+            'image1': forms.ClearableFileInput(attrs={'class': 'input', 'placeholder': 'images'}),
+            'image2': forms.ClearableFileInput(attrs={'class': 'input', 'placeholder': 'images'})
+
+        }
+
+    def clean_slug(self):
+        new_slug = self.cleaned_data['slug'].lower()
+
+        if new_slug == 'create':
+            raise ValidationError('Slig may not be "Create" ')
+        if Work.objects.filter(slug__iexact=new_slug).count():
+            raise ValidationError('Slug must be unique. We have "{}" slug already'.format(new_slug))
+        return new_slug
+

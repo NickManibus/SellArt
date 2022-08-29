@@ -6,10 +6,19 @@
     <div class="container container-padding">
         <div class="title text-center"><h1>{{work.title}}</h1>
             <ul class="list-inline">
-               {% for tag in work.tags.all %}
+                {% for tag in work.tags.all %}
                 <li class="list-inline-item"><a href="{% url 'tags_detail' tag.slug  %}">{{tag|title}}</a></li>
                 {% endfor %}
             </ul>
+            {% if user.is_authenticated %}
+            {% if user.id == work.author.id %}
+            <div class="container" style="margin-top: 15px;">
+
+                <a href="{% url 'work_update'  work.slug %}"> Update<br></a>
+                <a href="{% url 'work_delete'  work.slug %}"> Delete </a>
+            </div>
+            {% endif %}
+            {% endif %}
         </div>
     </div>
     <div class="portfolio-info">
@@ -17,7 +26,9 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="item">
-                        <div class="parent"><span>Author</span><h4><a href="{% url 'users_profile' user.slug %}">{{object.author}}</a>
+                        <div class="parent"><span>Author</span><h4>
+                            {% if user.is_authenticated %} <a href="{% url 'users_profile' user.slug %}"> {% endif %}
+                            {{object.author}}</a>
                         </h4></div>
                     </div>
                 </div>

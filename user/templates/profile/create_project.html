@@ -6,7 +6,6 @@
     <div class="container container-padding" style="margin-top:210px;">
         <div class="container" style="text-align: center;"><h2>Add a Project.</h2><span>  </span>
             <form id="contact-form" class="contact-form mt-6" method="POST" enctype="multipart/form-data" action="">
-
                 {% csrf_token %}
                 {% if form.errors %}
                 <div class="alert alert-danger alert-dismissible" role="alert">
@@ -20,34 +19,37 @@
                     </div>
                 </div>
                 {% endif %}
-                <div class="messages"></div>
-                <div class="row">
-                    <div class="form-group">
-                        {{form.title}}
-                    </div>
 
-                    <div class="form-group">
-                        {{form.email}}
-                    </div>
-                    <div class="form-group">
-                        {{form.instagram}}
-                    </div>
-                </div>
-<!--                  <div class="form-group" style="width: 817px;">-->
-<!--                    {{form.tags}}-->
-<!--                </div>-->
+                <!--                <div class="messages"></div>-->
+                <!--                <div class="row">-->
+                <!--                    <div class="form-group">-->
+                <!--                        {{form.title}}-->
+                <!--                    </div>-->
 
-                <div class="form-group" style="width: 817px;">
-                    {{form.text}}
-                </div>
-                <br>
+                <!--                    <div class="form-group">-->
+                <!--                        {{form.email}}-->
+                <!--                    </div>-->
+                <!--                    <div class="form-group">-->
+                <!--                        {{form.instagram}}-->
+                <!--                    </div>-->
+                <!--                </div>-->
+                <!--                <div class="form-group" style="width: 817px;">-->
+                <!--                    {{form.text}}-->
+                <!--                </div>-->
+                <!--                <br>-->
+                <!--                <div class="form-group" style="width: 817px;">-->
+                <!--                    {{form.tags}}-->
+                <!--                </div>-->
+                <!--                <br>-->
+                <!--                <input type="file" name="images" id="images" multiple required/>-->
 
-                <input type="file" name="images" id="images" multiple required/>
-                <div align="center">
-                    {% for img in images %}
-                    <img src="{{form.images.url}}">
-                    {% endfor %}
-                </div>
+                <!--                {{images.image.url}}-->
+                <!--                {{work.image1.url}}-->
+                <!--                {{work.image2.url}}-->
+                <!--                <div class="text-center">-->
+                <!--                    <button type="submit" class="btn btn-dark btn-lg" style="width: 350px">Save Changes</button>-->
+                <!--                </div>-->
+                {{form.as_p}}
                 <div class="text-center">
                     <button type="submit" class="btn btn-dark btn-lg" style="width: 350px">Save Changes</button>
                 </div>

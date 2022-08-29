@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect
 from home.models import Work
 from django.shortcuts import get_object_or_404
-
+from django.urls import reverse_lazy
 
 class BlogView(ListView):
     model = Post
@@ -20,18 +20,16 @@ class BlogView(ListView):
         return context
 
 
-class PostDetail(FormView, DetailView):
+class PostDetail(DetailView):
     model = Post
     template_name = 'post/post_single.html'
-    form_class = CommentForm
     slug_url_kwarg = 'post_slug'
+    success_url = reverse_lazy('post_single')
 
     def get_context_data(self, **kwargs):
-        context = super(PostDetail, self).get_context_data(**kwargs)
-        comments_connected = Comment.objects.filter(post=self.get_object())
-        context['comments'] = comments_connected
+        context = super().get_context_data(**kwargs)
+        context['comment'] = Comment.objects.all()
         context['comment_form'] = CommentForm()
-        context['works'] = Post.objects.all()
         return context
 
     def post(self, request, *args, **kwargs):

@@ -46,7 +46,7 @@
             <legend class="border-bottom mb-4">Edit Profile Information</legend>
         </summary>
         <div class="row justify-content-center align-items-center">
-            <form method="post" class="user-update-form" enctype="multipart/form-data">{% csrf_token %}
+            <form method="post" class="user-update-form" enctype="multipart/form-data" >{% csrf_token %}
                 <div class="form-row">
                     <div class="col-md-20">
                         <div class="form-group">
@@ -100,12 +100,12 @@
         <div class="col-md-4 col-sm-6 grid-item"><!-- portfolio item -->
             <div class="portfolio-item"><!-- hover -->
                 <div class="hover">
-                    <div class="info"><!-- title --><h3><a
-                            href="{% url 'works_detail' work.slug %}">{{work.title}}</a>
-                    </h3>
-                         {% for tag in work.tags.all %}
+                    <div class="info"><!-- title -->
+                        <h3><a href="{% url 'works_detail' work.slug %}">{{work.title}}</a></h3>
+                        {% for tag in work.tags.all %}
                         <span><a href="{% url 'tags_detail' tag.slug  %}">#{{tag|title}}</a></span>
                         {% endfor %}
+                        <a href="{% url 'work_update'  work.slug %}"></a>
                         <div class="icons"><a href="{% url 'works_detail' work.slug %}" class="more-link">
                             <i class="ion-md-arrow-forward"></i>
                         </a><i class="ion-md-heart-empty favorite"></i>
