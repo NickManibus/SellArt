@@ -63,7 +63,7 @@ class RegisterForm(UserCreationForm):
         super().__init__(*args, **kwargs)
         if 'request' in kwargs:
             self.request = kwargs.pop('request')
-        super(RegForm, self).__init__(*args, **kwargs)
+        super(RegisterForm, self).__init__(*args, **kwargs)
 
     def clean_username(self):
         username = self.cleaned_data['username']
