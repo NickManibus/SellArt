@@ -19,7 +19,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 
+SECRET_KEY = 'django-insecure-o2obdpfa3_t3%xl&xkcu4e6wt%3)$#6fo%+qhy7*@nwrr5s^%9'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'embed_video',
     'social_django',
+    'pytils',
     'home',
     'user',
     'post',
@@ -90,7 +91,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
         'USER': 'postgres',
-        'PASSWORD': '',
+        'PASSWORD': 'Sanchous6961344',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -148,16 +149,23 @@ LOGIN_URL = 'login'
 
 LOGOUT_REDIRECT_URL = 'login'
 
+# FACEBOOK
+SOCIAL_AUTH_FACEBOOK_KEY = '374675611453334'
+SOCIAL_AUTH_FACEBOOK_SECRET = 'b936863ab7e12faf320286bf1d7e0d94'
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = [
+    'email',
+]
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '154527820789-ua20s3d4c5jq4fue0gu3j3r5mjr9fb89.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
+
 # SMTP Configuration
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USER_TLS = True
-<<<<<<< Updated upstream
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-=======
 EMAIL_HOST_USER = 'aleksandrzem420@gmail.com'
 EMAIL_HOST_PASSWORD = 'Aleksandr6961344'
 
@@ -169,4 +177,3 @@ DJANGORESIZED_DEFAULT_KEEP_META = True
 DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
 DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
 DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
->>>>>>> Stashed changes

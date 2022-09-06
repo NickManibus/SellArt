@@ -159,7 +159,6 @@ class UpdateUserForm(forms.ModelForm):
 class UserFormWorks(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=Tags.objects.all())
 
-
     class Meta:
         model = Work
         fields = ['title', 'text', 'email', 'instagram', 'image', 'image1', 'image2', 'tags', ]
@@ -175,7 +174,6 @@ class UserFormWorks(forms.ModelForm):
             'image2': forms.ClearableFileInput(attrs={'class': 'input', 'placeholder': 'images'})
 
         }
-
 
     def clean_slug(self):
         new_slug = self.cleaned_data['slug'].lower()

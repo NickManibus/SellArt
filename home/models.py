@@ -6,6 +6,7 @@ from PIL import Image
 from django.urls import reverse
 from django.utils.text import slugify
 from django_resized import ResizedImageField
+from pytils.translit import slugify
 
 
 class FeedBackContact(models.Model):
