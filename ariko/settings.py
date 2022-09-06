@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'social_django',
     'home',
     'user',
-    'post'
+    'post',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
@@ -153,5 +154,19 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USER_TLS = True
+<<<<<<< Updated upstream
 EMAIL_HOST_USER = ''
 EMAIL_HOST_PASSWORD = ''
+=======
+EMAIL_HOST_USER = 'aleksandrzem420@gmail.com'
+EMAIL_HOST_PASSWORD = 'Aleksandr6961344'
+
+
+DJANGORESIZED_DEFAULT_SIZE = [1920, 1080]
+DJANGORESIZED_DEFAULT_SCALE = 1.0
+DJANGORESIZED_DEFAULT_QUALITY = 75
+DJANGORESIZED_DEFAULT_KEEP_META = True
+DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'JPEG'
+DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'JPEG': ".jpg"}
+DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
+>>>>>>> Stashed changes

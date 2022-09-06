@@ -5,6 +5,20 @@
 <section class="center">
     <div class="container container-padding" style="margin-top:210px;">
         <div class="container" style="text-align: center;"><h2>Add a Project.</h2><span>  </span>
+
+            {% if messages %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                {% for message in messages %}
+                <div class="message {{ message.tags }}">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <form id="contact-form" class="contact-form mt-6" method="POST" enctype="multipart/form-data" action="">
                 {% csrf_token %}
                 {% if form.errors %}
@@ -20,36 +34,64 @@
                 </div>
                 {% endif %}
 
-                <!--                <div class="messages"></div>-->
-                <!--                <div class="row">-->
-                <!--                    <div class="form-group">-->
-                <!--                        {{form.title}}-->
-                <!--                    </div>-->
 
-                <!--                    <div class="form-group">-->
-                <!--                        {{form.email}}-->
-                <!--                    </div>-->
-                <!--                    <div class="form-group">-->
-                <!--                        {{form.instagram}}-->
-                <!--                    </div>-->
-                <!--                </div>-->
-                <!--                <div class="form-group" style="width: 817px;">-->
-                <!--                    {{form.text}}-->
-                <!--                </div>-->
-                <!--                <br>-->
-                <!--                <div class="form-group" style="width: 817px;">-->
-                <!--                    {{form.tags}}-->
-                <!--                </div>-->
-                <!--                <br>-->
-                <!--                <input type="file" name="images" id="images" multiple required/>-->
+                <div class="messages"></div>
+                <div class="row">
+                    <div class="form-group">
+                        {% if form.title.errors %}
+                        <div class="help-block with-errors">
+                            <strong>{{form.title.errors}} </strong>
+                        </div>
+                        {% endif %}
+                        {{form.title}}
+                    </div>
 
-                <!--                {{images.image.url}}-->
-                <!--                {{work.image1.url}}-->
-                <!--                {{work.image2.url}}-->
-                <!--                <div class="text-center">-->
-                <!--                    <button type="submit" class="btn btn-dark btn-lg" style="width: 350px">Save Changes</button>-->
-                <!--                </div>-->
-                {{form.as_p}}
+                    <div class="form-group">
+                        {% if form.email.errors %}
+                        <div class="help-block with-errors">
+                            <strong>{{form.email.errors}} </strong>
+                        </div>
+                        {% endif %}
+                        {{form.email}}
+                    </div>
+                    <div class="form-group">
+                        {{form.instagram}}
+                    </div>
+                </div>
+                <div class="form-group" style="width: 817px;">
+                    {% if form.text.errors %}
+                    <div class="help-block with-errors">
+                        <strong>{{form.text.errors}} </strong>
+                    </div>
+                    {% endif %}
+                    {{form.text}}
+                </div>
+                <br>
+
+
+                <div class="form-group" style="margin-left:260px;">
+                    <div class="col-sm-1">
+                        {{form.image}}
+                    </div>
+                    <br>
+                    <div class="col-sm-1">
+                        {{form.image1}}
+                    </div>
+                    <br>
+                    <div class="col-sm-1">
+                        {{form.image2}}
+                    </div>
+                </div>
+                <br>
+                <div class="form-group" style="width: 817px;">
+                    {% if form.tags.errors %}
+                    <div class="help-block with-errors">
+                        <strong>{{form.tags.errors}} </strong>
+                    </div>
+                    {% endif %}
+                    {{form.tags}}
+                </div>
+
                 <div class="text-center">
                     <button type="submit" class="btn btn-dark btn-lg" style="width: 350px">Save Changes</button>
                 </div>

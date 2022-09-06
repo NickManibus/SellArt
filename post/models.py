@@ -5,6 +5,7 @@ from django.dispatch.dispatcher import receiver
 from user.models import User
 from random import randrange
 from django.urls import reverse
+from django_resized import ResizedImageField
 
 
 class Post(models.Model):
@@ -14,7 +15,9 @@ class Post(models.Model):
     )
 
     author = models.ForeignKey(User, related_name='post', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='post/%Y/%m/%d/%H/%M%S', null=True, blank=True)
+
+    image = ResizedImageField(size=[500, 500], force_format='jpeg', crop=['middle', 'center'],
+                              upload_to='post/%Y/%m/%d/', null=True, blank=True)
     title = models.CharField(max_length=250)
     text = models.TextField()
     is_updated = models.BooleanField(default=False)

@@ -5,6 +5,7 @@ from django.dispatch.dispatcher import receiver
 from PIL import Image
 from django.urls import reverse
 from django.utils.text import slugify
+from django_resized import ResizedImageField
 
 
 class FeedBackContact(models.Model):
@@ -45,9 +46,12 @@ class Video(models.Model):
 class Work(models.Model):
     title = models.CharField(max_length=250)
     author = models.ForeignKey(User, related_name='author', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='works/%Y/%m/%d/%H/%M%S', )
-    image1 = models.ImageField(upload_to='works/%Y/%m/%d/%H/%M%S', null=True, blank=True)
-    image2 = models.ImageField(upload_to='works/%Y/%m/%d/%H/%M%S', null=True, blank=True)
+    image = ResizedImageField(size=[1920, 1350], force_format='jpeg', crop=['middle', 'center'],
+                              upload_to='works/%Y/%m/%d/', )
+    image1 = ResizedImageField(size=[1920, 1350], force_format='jpeg', crop=['middle', 'center'],
+                               upload_to='works/%Y/%m/%d/', )
+    image2 = ResizedImageField(size=[1920, 1350], force_format='jpeg', crop=['middle', 'center'],
+                               upload_to='works/%Y/%m/%d/', )
     email = models.EmailField(blank=True, verbose_name='Email: ')
     full_name = models.CharField(max_length=250, verbose_name='First Name, Last Name:', blank=True)
     text = models.TextField(max_length=1000)
@@ -91,7 +95,7 @@ class Tags(models.Model):
 
 
 class Images(models.Model):
-    image = models.ImageField(upload_to='works/%Y/%m/%d/%H/%M%S', )
+    image = models.ImageField(upload_to='works/%Y/%m/%d/', )
     new_post = models.ForeignKey(Work, verbose_name='work_image', on_delete=models.CASCADE)
 
     class Meta:

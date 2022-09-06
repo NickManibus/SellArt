@@ -8,8 +8,10 @@
         <article class="blog-item"><!-- header -->
             <header><!-- title --><h2 class="title" ><a href="{% url 'post_single' post.slug %}">{{post.title}}</a></h2><!-- meta -->
                 <ul class="meta list-inline">
-                    <li class="list-inline-item"><a href="#">Ariko</a></li>
-                    <li class="list-inline-item"><a href="#">Thoughts</a></li>
+                    <li class="list-inline-item"><a href="#">{{ post.time_create|date:'d F Y ' }}</a></li>
+                    {% for tag in post.tags.all %}
+                    <li class="list-inline-item"><a href="#">{{tag}}</a></li>
+                    {% endfor %}
                 </ul>
                 <p></p>
                 <img src="{{post.image.url}}" alt="blog-thumb" width="945" height="500"/>

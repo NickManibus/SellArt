@@ -8,7 +8,6 @@ from django.contrib.messages.views import SuccessMessageMixin, messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from home.models import Work, User, Images
-
 from django.shortcuts import HttpResponseRedirect
 
 
@@ -48,13 +47,15 @@ class Profile(UpdateView, DetailView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(Profile, self).get_context_data(*args, **kwargs)
-        context['user_form'] = UpdateUserForm( instance=self.request.user)
+        context['user_form'] = UpdateUserForm(instance=self.request.user)
         context['works'] = Work.objects.filter(author=self.request.user)
         return context
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
         form.save()
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Your profile has been successfully updated')
         return HttpResponseRedirect(reverse('users_profile', kwargs={'slug': self.get_object().slug}))
 
 
@@ -73,6 +74,8 @@ class CreateWorkView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.save()
+        messages.add_message(self.request, messages.SUCCESS,
+                             'Your post has been sent for moderation, it will be published soon')
         return HttpResponseRedirect(self.request.path)
 
 
@@ -91,6 +94,7 @@ class UpdateWorkView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == work.author:
             return True
         return False
+
 
 class DeleteWorkView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Work

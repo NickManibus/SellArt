@@ -14,10 +14,10 @@ class CommentForm(forms.ModelForm):
                                                  'rows': 5, }),
                    }
 
-    def __init__(self, *args, **kwargs):
-        """Save the request with the form so it can be accessed in clean_*()"""
-        self.request = kwargs.pop('request', None)
-        super(CommentForm, self).__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     """Save the request with the form so it can be accessed in clean_*()"""
+    #     self.request = kwargs.pop('request', None)
+    #     super(CommentForm, self).__init__(*args, **kwargs)
 
     def clean_name(self):
         data =self.cleaned_data['name']

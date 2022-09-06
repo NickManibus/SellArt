@@ -13,6 +13,9 @@ class WorkList(ListView):  # Home_page
     context_object_name = 'works'
     paginate_by = 3
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(is_moderated=True)
 
 class WorkDetail(DetailView):
     model = Work
